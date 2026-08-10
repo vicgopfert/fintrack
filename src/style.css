@@ -227,7 +227,7 @@
   --accent-foreground: oklch(1 0 0);
 
   /* Botões destrutivos */
-  --destructive: oklch(0.62 0.24 28);
+  --destructive: oklch(51.3% 0.19679 27.83);
   --destructive-foreground: oklch(1 0 0);
 
   /* Bordas */

@@ -9,4 +9,5 @@ export {
   CardTitle,
 } from './ui/card';
 export { Checkbox } from './ui/checkbox';
+export { Field, FieldError } from './ui/field';
 export { Input } from './ui/input';
