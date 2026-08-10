@@ -8,6 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  Checkbox,
   Input,
   PasswordInput,
 } from '@/components';
@@ -28,6 +29,32 @@ const RegisterPage = () => {
           <Input placeholder="Digite seu email" />
           <PasswordInput />
           <PasswordInput placeholder="Confirme sua senha" />
+          <div className="items-top flex space-x-2">
+            <Checkbox id="terms" />
+            <div className="5 grid gap-1 leading-none">
+              <label
+                htmlFor="terms"
+                className="text-xs text-muted-foreground opacity-75"
+              >
+                Ao clicar em &quot;Criar conta&quot;, você concorda com os
+                nossos{' '}
+                <Link
+                  to="/terms"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  Termos de Serviço
+                </Link>{' '}
+                e{' '}
+                <Link
+                  to="/privacy"
+                  className="text-primary underline underline-offset-4 hover:text-primary/80"
+                >
+                  Política de Privacidade
+                </Link>
+                .
+              </label>
+            </div>
+          </div>
         </CardContent>
         <CardFooter>
           <Button className="w-full cursor-pointer">Criar conta</Button>
