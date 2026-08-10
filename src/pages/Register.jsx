@@ -1,21 +1,18 @@
-import { Eye, EyeClosed } from 'lucide-react';
-import { useState } from 'react';
 import { Link } from 'react-router';
 
-import { Button } from '@/components/ui/button';
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+  Input,
+  PasswordInput,
+} from '@/components';
 
 const RegisterPage = () => {
-  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
-
   return (
     <div className="flex h-screen w-full flex-col items-center justify-center gap-3">
       <Card className="w-96">
@@ -29,21 +26,8 @@ const RegisterPage = () => {
           <Input placeholder="Digite seu nome" />
           <Input placeholder="Digite seu sobrenome" />
           <Input placeholder="Digite seu email" />
-          <div className="relative">
-            <Input
-              type={passwordIsVisible ? 'text' : 'password'}
-              placeholder="Digite sua senha"
-            />
-
-            <Button
-              type="button"
-              variant="ghost"
-              className="absolute top-0 right-0 bottom-0 my-auto mr-1 h-8 w-8 text-muted-foreground"
-              onClick={() => setPasswordIsVisible(!passwordIsVisible)}
-            >
-              {passwordIsVisible ? <EyeClosed /> : <Eye />}
-            </Button>
-          </div>
+          <PasswordInput />
+          <PasswordInput placeholder="Confirme sua senha" />
         </CardContent>
         <CardFooter>
           <Button className="w-full cursor-pointer">Criar conta</Button>
