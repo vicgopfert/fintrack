@@ -48,7 +48,7 @@ const RegisterPage = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(registerSchema),
-    mode: 'onBlur',
+    mode: 'onSubmit',
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -64,19 +64,22 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex h-screen w-full flex-col items-center justify-center gap-3">
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Card className="w-96">
-          <CardHeader className="items-center text-center">
-            <CardTitle className="text-2xl">Crie a sua conta</CardTitle>
+    <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 px-4 py-10">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm">
+        <Card className="w-full gap-7 border-0 bg-transparent py-0 shadow-none ring-0">
+          <CardHeader className="items-center gap-2 px-0 text-center">
+            <CardTitle className="text-2xl font-bold">
+              Crie a sua conta
+            </CardTitle>
             <CardDescription>
               Insira suas informações para se registrar.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 px-0">
             <Field>
               <Input
                 placeholder="Digite seu nome"
+                className="h-11 px-4"
                 aria-invalid={!!errors.firstName}
                 {...register('firstName')}
               />
@@ -86,6 +89,7 @@ const RegisterPage = () => {
             <Field>
               <Input
                 placeholder="Digite seu sobrenome"
+                className="h-11 px-4"
                 aria-invalid={!!errors.lastName}
                 {...register('lastName')}
               />
@@ -95,6 +99,7 @@ const RegisterPage = () => {
             <Field>
               <Input
                 placeholder="Digite seu email"
+                className="h-11 px-4"
                 aria-invalid={!!errors.email}
                 {...register('email')}
               />
@@ -103,6 +108,7 @@ const RegisterPage = () => {
 
             <Field>
               <PasswordInput
+                className="h-11 px-4"
                 aria-invalid={!!errors.password}
                 {...register('password')}
               />
@@ -112,6 +118,7 @@ const RegisterPage = () => {
             <Field>
               <PasswordInput
                 placeholder="Confirme sua senha"
+                className="h-11 px-4"
                 aria-invalid={!!errors.confirmPassword}
                 {...register('confirmPassword')}
               />
@@ -119,7 +126,7 @@ const RegisterPage = () => {
             </Field>
 
             <Field>
-              <div className="items-top flex space-x-2">
+              <div className="flex items-start gap-3 pt-1">
                 <Controller
                   control={control}
                   name="terms"
@@ -134,7 +141,7 @@ const RegisterPage = () => {
                     />
                   )}
                 />
-                <div className="5 grid gap-1 leading-none">
+                <div className="grid gap-1 leading-relaxed">
                   <label
                     htmlFor="terms"
                     className="text-xs text-muted-foreground opacity-75"
@@ -161,10 +168,10 @@ const RegisterPage = () => {
               <FieldError>{errors.terms?.message}</FieldError>
             </Field>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="border-t-0 bg-transparent p-0">
             <Button
               type="submit"
-              className="w-full cursor-pointer"
+              className="h-11 w-full cursor-pointer text-sm font-semibold"
               disabled={isSubmitting}
             >
               Criar conta
@@ -176,7 +183,11 @@ const RegisterPage = () => {
       <div className="flex items-center justify-center">
         <p className="text-sm text-muted-foreground">
           Já possui uma conta?
-          <Button variant="link" className="cursor-pointer" asChild>
+          <Button
+            variant="link"
+            className="h-auto cursor-pointer px-1 py-0 font-semibold"
+            asChild
+          >
             <Link to="/login">Faça login</Link>
           </Button>
         </p>
