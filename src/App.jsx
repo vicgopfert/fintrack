@@ -1,5 +1,7 @@
+import { Outlet } from 'react-router';
+
 const App = () => {
-  return <h1 className="text-2xl font-bold text-sky-600">Finance Tracker</h1>;
+  return <Outlet />;
 };
 
 export default App;
