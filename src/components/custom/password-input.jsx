@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
-const PasswordInput = ({ placeholder = 'Digite sua senha' }) => {
+const PasswordInput = ({ placeholder = 'Digite sua senha', ...props }) => {
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
   return (
@@ -12,6 +12,7 @@ const PasswordInput = ({ placeholder = 'Digite sua senha' }) => {
       <Input
         type={passwordIsVisible ? 'text' : 'password'}
         placeholder={placeholder}
+        {...props}
       />
 
       <Button
