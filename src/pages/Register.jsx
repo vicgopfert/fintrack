@@ -17,6 +17,7 @@ import {
   Input,
   PasswordInput,
 } from '@/components';
+import { useRegister } from '@/hook/data/use-register';
 
 const registerSchema = z
   .object({
@@ -41,11 +42,13 @@ const registerSchema = z
   });
 
 const RegisterPage = () => {
+  const { mutate: registerUser, isPending } = useRegister();
+
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(registerSchema),
     mode: 'onSubmit',
@@ -60,7 +63,8 @@ const RegisterPage = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    const { firstName, lastName, email, password } = data;
+    registerUser({ firstName, lastName, email, password });
   };
 
   return (
@@ -80,6 +84,7 @@ const RegisterPage = () => {
               <Input
                 placeholder="Digite seu nome"
                 aria-invalid={!!errors.firstName}
+                disabled={isPending}
                 {...register('firstName')}
               />
               <FieldError>{errors.firstName?.message}</FieldError>
@@ -89,6 +94,7 @@ const RegisterPage = () => {
               <Input
                 placeholder="Digite seu sobrenome"
                 aria-invalid={!!errors.lastName}
+                disabled={isPending}
                 {...register('lastName')}
               />
               <FieldError>{errors.lastName?.message}</FieldError>
@@ -98,6 +104,7 @@ const RegisterPage = () => {
               <Input
                 placeholder="Digite seu e-mail"
                 aria-invalid={!!errors.email}
+                disabled={isPending}
                 {...register('email')}
               />
               <FieldError>{errors.email?.message}</FieldError>
@@ -106,6 +113,7 @@ const RegisterPage = () => {
             <Field>
               <PasswordInput
                 aria-invalid={!!errors.password}
+                disabled={isPending}
                 {...register('password')}
               />
               <FieldError>{errors.password?.message}</FieldError>
@@ -115,6 +123,7 @@ const RegisterPage = () => {
               <PasswordInput
                 placeholder="Confirme sua senha"
                 aria-invalid={!!errors.confirmPassword}
+                disabled={isPending}
                 {...register('confirmPassword')}
               />
               <FieldError>{errors.confirmPassword?.message}</FieldError>
@@ -133,6 +142,7 @@ const RegisterPage = () => {
                       onBlur={field.onBlur}
                       ref={field.ref}
                       aria-invalid={!!errors.terms}
+                      disabled={isPending}
                     />
                   )}
                 />
@@ -146,6 +156,7 @@ const RegisterPage = () => {
                     <Link
                       to="/terms"
                       className="text-primary underline underline-offset-4 hover:text-primary/80"
+                      disabled={isPending}
                     >
                       Termos de Serviço
                     </Link>{' '}
@@ -153,6 +164,7 @@ const RegisterPage = () => {
                     <Link
                       to="/privacy"
                       className="text-primary underline underline-offset-4 hover:text-primary/80"
+                      disabled={isPending}
                     >
                       Política de Privacidade
                     </Link>
@@ -167,7 +179,7 @@ const RegisterPage = () => {
             <Button
               type="submit"
               className="h-11 w-full cursor-pointer text-sm font-semibold"
-              disabled={isSubmitting}
+              disabled={isPending}
             >
               Criar conta
             </Button>
@@ -181,6 +193,7 @@ const RegisterPage = () => {
           <Button
             variant="link"
             className="h-auto cursor-pointer px-1 py-0 font-semibold"
+            disabled={isPending}
             asChild
           >
             <Link to="/login">Faça login</Link>
