@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
+import { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { z } from 'zod';
 
 import {
@@ -18,8 +18,7 @@ import {
   Input,
   PasswordInput,
 } from '@/components';
-import { useRegister } from '@/hook/data/use-register';
-import { api } from '@/lib/axios';
+import { AuthContext } from '@/contexts/auth';
 
 const registerSchema = z
   .object({
@@ -44,8 +43,7 @@ const registerSchema = z
   });
 
 const RegisterPage = () => {
-  const { mutate: registerUser, isPending } = useRegister();
-  const navigate = useNavigate();
+  const { register: registerUser, isPending } = useContext(AuthContext);
 
   const {
     register,
@@ -65,32 +63,9 @@ const RegisterPage = () => {
     },
   });
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const accessToken = localStorage.getItem('accessToken');
-        const refreshToken = localStorage.getItem('refreshToken');
-        if (!accessToken && !refreshToken) return;
-        await api.get('/users/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        navigate('/');
-      } catch (error) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        console.error('Error initializing registration page:', error);
-      }
-    };
-
-    init();
-  }, [navigate]);
-
   const onSubmit = (data) => {
     const { firstName, lastName, email, password } = data;
     registerUser({ firstName, lastName, email, password });
-    navigate('/');
   };
 
   return (
@@ -182,7 +157,6 @@ const RegisterPage = () => {
                     <Link
                       to="/terms"
                       className="text-primary underline underline-offset-4 hover:text-primary/80"
-                      disabled={isPending}
                     >
                       Termos de Serviço
                     </Link>{' '}
@@ -190,7 +164,6 @@ const RegisterPage = () => {
                     <Link
                       to="/privacy"
                       className="text-primary underline underline-offset-4 hover:text-primary/80"
-                      disabled={isPending}
                     >
                       Política de Privacidade
                     </Link>
@@ -219,7 +192,6 @@ const RegisterPage = () => {
           <Button
             variant="link"
             className="h-auto cursor-pointer px-1 py-0 font-semibold"
-            disabled={isPending}
             asChild
           >
             <Link to="/login">Faça login</Link>

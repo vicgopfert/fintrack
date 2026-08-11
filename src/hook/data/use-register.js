@@ -24,7 +24,7 @@ export const useRegister = () => {
       localStorage.setItem('refreshToken', refreshToken);
 
       console.log('Usuário registrado com sucesso:', createdUser);
-      toast.success('Conta criada com sucesso! Você já pode fazer login.');
+      toast.success('Conta criada com sucesso!');
     },
 
     onError: (error) => {
