@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import { z } from 'zod';
@@ -17,7 +16,7 @@ import {
   Input,
   PasswordInput,
 } from '@/components';
-import { AuthContext } from '@/contexts/auth';
+import { useAuthContext } from '@/contexts/auth';
 
 const loginSchema = z.object({
   email: z.email('E-mail inválido'),
@@ -25,7 +24,7 @@ const loginSchema = z.object({
 });
 
 const LoginPage = () => {
-  const { login: loginUser, isPending } = useContext(AuthContext);
+  const { login: loginUser, isPending } = useAuthContext();
 
   const {
     register,

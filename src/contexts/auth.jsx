@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { useLogin } from '@/hook/data/use-login';
@@ -11,6 +11,8 @@ export const AuthContext = createContext({
   register: () => {},
   isPending: false,
 });
+
+export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);

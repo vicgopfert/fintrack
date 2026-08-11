@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useContext } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import { z } from 'zod';
@@ -18,7 +17,7 @@ import {
   Input,
   PasswordInput,
 } from '@/components';
-import { AuthContext } from '@/contexts/auth';
+import { useAuthContext } from '@/contexts/auth';
 
 const registerSchema = z
   .object({
@@ -43,7 +42,7 @@ const registerSchema = z
   });
 
 const RegisterPage = () => {
-  const { register: registerUser, isPending } = useContext(AuthContext);
+  const { register: registerUser, isPending } = useAuthContext();
 
   const {
     register,
