@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
+import { useLogin } from '@/hook/data/use-login';
 import { useRegister } from '@/hook/data/use-register';
 import { api } from '@/lib/axios';
 
@@ -13,7 +14,9 @@ export const AuthContext = createContext({
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const { mutateAsync: registerUser, isPending } = useRegister();
+  const { mutateAsync: registerUser, isPending: isRegisterPending } =
+    useRegister();
+  const { mutateAsync: loginUser, isPending: isLoginPending } = useLogin();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,19 +46,40 @@ export const AuthContextProvider = ({ children }) => {
   const register = async (data) => {
     const { firstName, lastName, email, password } = data;
 
-    const createdUser = await registerUser({
-      firstName,
-      lastName,
-      email,
-      password,
-    });
-    setUser(createdUser.user);
-    navigate('/');
+    try {
+      const createdUser = await registerUser({
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+      setUser(createdUser.user);
+      navigate('/');
+    } catch {
+      // O erro já é reportado ao usuário pelo onError do useRegister.
+    }
+  };
+
+  const login = async (data) => {
+    const { email, password } = data;
+
+    try {
+      const loggedUser = await loginUser({ email, password });
+      setUser(loggedUser);
+      navigate('/');
+    } catch {
+      // O erro já é reportado ao usuário pelo onError do useLogin.
+    }
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, login: () => {}, register, isPending }}
+      value={{
+        user,
+        login: login,
+        register,
+        isPending: isRegisterPending || isLoginPending,
+      }}
     >
       {children}
     </AuthContext.Provider>

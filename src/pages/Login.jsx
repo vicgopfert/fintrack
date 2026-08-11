@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
+import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { z } from 'zod';
 
 import {
@@ -17,8 +17,7 @@ import {
   Input,
   PasswordInput,
 } from '@/components';
-import { useLogin } from '@/hook/data/use-login';
-import { api } from '@/lib/axios';
+import { AuthContext } from '@/contexts/auth';
 
 const loginSchema = z.object({
   email: z.email('E-mail inválido'),
@@ -26,8 +25,7 @@ const loginSchema = z.object({
 });
 
 const LoginPage = () => {
-  const { mutate: loginUser, isPending } = useLogin();
-  const navigate = useNavigate();
+  const { login: loginUser, isPending } = useContext(AuthContext);
 
   const {
     register,
@@ -42,32 +40,9 @@ const LoginPage = () => {
     },
   });
 
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const accessToken = localStorage.getItem('accessToken');
-        const refreshToken = localStorage.getItem('refreshToken');
-        if (!accessToken && !refreshToken) return;
-        await api.get('/users/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        navigate('/');
-      } catch (error) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        console.error('Error initializing login page:', error);
-      }
-    };
-
-    init();
-  }, [navigate]);
-
   const onSubmit = (data) => {
     const { email, password } = data;
     loginUser({ email, password });
-    navigate('/');
   };
 
   return (
