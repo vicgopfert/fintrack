@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { z } from 'zod';
 
 import {
@@ -18,6 +19,7 @@ import {
   PasswordInput,
 } from '@/components';
 import { useRegister } from '@/hook/data/use-register';
+import { api } from '@/lib/axios';
 
 const registerSchema = z
   .object({
@@ -43,6 +45,7 @@ const registerSchema = z
 
 const RegisterPage = () => {
   const { mutate: registerUser, isPending } = useRegister();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -61,6 +64,28 @@ const RegisterPage = () => {
       terms: false,
     },
   });
+
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (!accessToken && !refreshToken) return;
+        await api.get('/users/me', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        navigate('/');
+      } catch (error) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        console.error('Error initializing registration page:', error);
+      }
+    };
+
+    init();
+  }, [navigate]);
 
   const onSubmit = (data) => {
     const { firstName, lastName, email, password } = data;
