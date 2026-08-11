@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { z } from 'zod';
 
 import {
@@ -16,6 +17,8 @@ import {
   Input,
   PasswordInput,
 } from '@/components';
+import { useLogin } from '@/hook/data/use-login';
+import { api } from '@/lib/axios';
 
 const loginSchema = z.object({
   email: z.email('E-mail inválido'),
@@ -23,10 +26,13 @@ const loginSchema = z.object({
 });
 
 const LoginPage = () => {
+  const { mutate: loginUser, isPending } = useLogin();
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm({
     resolver: zodResolver(loginSchema),
     mode: 'onSubmit',
@@ -36,8 +42,32 @@ const LoginPage = () => {
     },
   });
 
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const accessToken = localStorage.getItem('accessToken');
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (!accessToken && !refreshToken) return;
+        await api.get('/users/me', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        navigate('/');
+      } catch (error) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        console.error('Error initializing login page:', error);
+      }
+    };
+
+    init();
+  }, [navigate]);
+
   const onSubmit = (data) => {
-    console.log(data);
+    const { email, password } = data;
+    loginUser({ email, password });
+    navigate('/');
   };
 
   return (
@@ -55,6 +85,7 @@ const LoginPage = () => {
               <Input
                 placeholder="Digite seu e-mail"
                 aria-invalid={!!errors.email}
+                disabled={isPending}
                 {...register('email')}
               />
               <FieldError>{errors.email?.message}</FieldError>
@@ -63,6 +94,7 @@ const LoginPage = () => {
             <Field>
               <PasswordInput
                 aria-invalid={!!errors.password}
+                disabled={isPending}
                 {...register('password')}
               />
               <FieldError>{errors.password?.message}</FieldError>
@@ -72,7 +104,7 @@ const LoginPage = () => {
             <Button
               type="submit"
               className="h-11 w-full cursor-pointer text-sm font-semibold"
-              disabled={isSubmitting}
+              disabled={isPending}
             >
               Fazer login
             </Button>
@@ -86,6 +118,7 @@ const LoginPage = () => {
           <Button
             variant="link"
             className="h-auto cursor-pointer px-1 py-0 font-semibold"
+            disabled={isPending}
             asChild
           >
             <Link to="/register">Crie agora</Link>

@@ -90,6 +90,7 @@ const RegisterPage = () => {
   const onSubmit = (data) => {
     const { firstName, lastName, email, password } = data;
     registerUser({ firstName, lastName, email, password });
+    navigate('/');
   };
 
   return (
