@@ -18,7 +18,7 @@ const PasswordInput = ({ placeholder = 'Digite sua senha', ...props }) => {
       <Button
         type="button"
         variant="ghost"
-        className="absolute top-0 right-0 bottom-0 my-auto mr-1 h-8 w-8 text-muted-foreground"
+        className="absolute top-0 right-0 bottom-0 my-auto mr-1 h-8 w-8 cursor-pointer text-muted-foreground"
         onClick={() => setPasswordIsVisible(!passwordIsVisible)}
       >
         {passwordIsVisible ? <EyeClosed /> : <Eye />}

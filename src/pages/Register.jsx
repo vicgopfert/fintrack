@@ -22,7 +22,7 @@ const registerSchema = z
   .object({
     firstName: z.string().trim().min(1, 'O nome é obrigatório'),
     lastName: z.string().trim().min(1, 'O sobrenome é obrigatório'),
-    email: z.email('Email inválido'),
+    email: z.email('E-mail inválido'),
     password: z
       .string()
       .trim()
@@ -79,7 +79,6 @@ const RegisterPage = () => {
             <Field>
               <Input
                 placeholder="Digite seu nome"
-                className="h-11 px-4"
                 aria-invalid={!!errors.firstName}
                 {...register('firstName')}
               />
@@ -89,7 +88,6 @@ const RegisterPage = () => {
             <Field>
               <Input
                 placeholder="Digite seu sobrenome"
-                className="h-11 px-4"
                 aria-invalid={!!errors.lastName}
                 {...register('lastName')}
               />
@@ -98,8 +96,7 @@ const RegisterPage = () => {
 
             <Field>
               <Input
-                placeholder="Digite seu email"
-                className="h-11 px-4"
+                placeholder="Digite seu e-mail"
                 aria-invalid={!!errors.email}
                 {...register('email')}
               />
@@ -108,7 +105,6 @@ const RegisterPage = () => {
 
             <Field>
               <PasswordInput
-                className="h-11 px-4"
                 aria-invalid={!!errors.password}
                 {...register('password')}
               />
@@ -118,7 +114,6 @@ const RegisterPage = () => {
             <Field>
               <PasswordInput
                 placeholder="Confirme sua senha"
-                className="h-11 px-4"
                 aria-invalid={!!errors.confirmPassword}
                 {...register('confirmPassword')}
               />
