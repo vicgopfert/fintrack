@@ -18,11 +18,6 @@ export const useRegister = () => {
     },
 
     onSuccess: (createdUser) => {
-      const accessToken = createdUser.tokens.accessToken;
-      const refreshToken = createdUser.tokens.refreshToken;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-
       console.log('Usuário registrado com sucesso:', createdUser);
       toast.success('Conta criada com sucesso!');
     },

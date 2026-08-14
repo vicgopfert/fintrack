@@ -16,11 +16,6 @@ export const useLogin = () => {
     },
 
     onSuccess: (loggedUser) => {
-      const accessToken = loggedUser.tokens.accessToken;
-      const refreshToken = loggedUser.tokens.refreshToken;
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-
       console.log('Usuário logado com sucesso:', loggedUser);
       toast.success('Login realizado com sucesso!');
     },

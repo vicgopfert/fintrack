@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 
 import { useLogin } from '@/hook/data/use-login';
 import { useRegister } from '@/hook/data/use-register';
+import { clearTokens, getTokens, setTokens } from '@/lib/auth-tokens';
 import { api } from '@/lib/axios';
 
 export const AuthContext = createContext({
@@ -24,19 +25,13 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const init = async () => {
       try {
-        const accessToken = localStorage.getItem('accessToken');
-        const refreshToken = localStorage.getItem('refreshToken');
+        const { accessToken, refreshToken } = getTokens();
         if (!accessToken && !refreshToken) return;
-        const response = await api.get('/users/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await api.get('/users/me');
         setUser(response.data);
         navigate('/');
       } catch (error) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        clearTokens();
         navigate('/login');
         console.error('Erro ao restaurar a sessão:', error);
       }
@@ -56,6 +51,7 @@ export const AuthContextProvider = ({ children }) => {
         password,
       });
       setUser(createdUser.user);
+      setTokens(createdUser.tokens);
       navigate('/');
     } catch {
       // O erro já é reportado ao usuário pelo onError do useRegister.
@@ -68,6 +64,7 @@ export const AuthContextProvider = ({ children }) => {
     try {
       const loggedUser = await loginUser({ email, password });
       setUser(loggedUser);
+      setTokens(loggedUser.tokens);
       navigate('/');
     } catch {
       // O erro já é reportado ao usuário pelo onError do useLogin.
