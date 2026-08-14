@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
 
 import { useLogin } from '@/hook/data/use-login';
 import { useRegister } from '@/hook/data/use-register';
@@ -11,34 +10,37 @@ export const AuthContext = createContext({
   login: () => {},
   register: () => {},
   isPending: false,
+  isInitializing: false,
 });
 
 export const useAuthContext = () => useContext(AuthContext);
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isInitializing, setIsInitializing] = useState(true);
   const { mutateAsync: registerUser, isPending: isRegisterPending } =
     useRegister();
   const { mutateAsync: loginUser, isPending: isLoginPending } = useLogin();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const init = async () => {
       try {
+        setIsInitializing(true);
         const { accessToken, refreshToken } = getTokens();
         if (!accessToken && !refreshToken) return;
         const response = await api.get('/users/me');
         setUser(response.data);
-        navigate('/');
       } catch (error) {
+        setUser(null);
         clearTokens();
-        navigate('/login');
         console.error('Erro ao restaurar a sessão:', error);
+      } finally {
+        setIsInitializing(false);
       }
     };
 
     init();
-  }, [navigate]);
+  }, []);
 
   const register = async (data) => {
     const { firstName, lastName, email, password } = data;
@@ -52,7 +54,6 @@ export const AuthContextProvider = ({ children }) => {
       });
       setUser(createdUser.user);
       setTokens(createdUser.tokens);
-      navigate('/');
     } catch {
       // O erro já é reportado ao usuário pelo onError do useRegister.
     }
@@ -65,7 +66,6 @@ export const AuthContextProvider = ({ children }) => {
       const loggedUser = await loginUser({ email, password });
       setUser(loggedUser);
       setTokens(loggedUser.tokens);
-      navigate('/');
     } catch {
       // O erro já é reportado ao usuário pelo onError do useLogin.
     }
@@ -78,6 +78,7 @@ export const AuthContextProvider = ({ children }) => {
         login: login,
         register,
         isPending: isRegisterPending || isLoginPending,
+        isInitializing,
       }}
     >
       {children}
