@@ -11,3 +11,4 @@ export {
 export { Checkbox } from './ui/checkbox';
 export { Field, FieldError } from './ui/field';
 export { Input } from './ui/input';
+export { Spinner } from './ui/spinner';
