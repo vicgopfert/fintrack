@@ -33,7 +33,6 @@ export const AuthContextProvider = ({ children }) => {
         setUser(response.data);
       } catch (error) {
         setUser(null);
-        clearTokens();
         console.error('Erro ao restaurar a sessão:', error);
       } finally {
         setIsInitializing(false);
