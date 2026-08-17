@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
         setIsInitializing(true);
         const { accessToken, refreshToken } = getTokens();
         if (!accessToken && !refreshToken) return;
-        const response = await UserService.me();
+        const response = await UserService.getMe();
         setUser(response);
       } catch (error) {
         setUser(null);

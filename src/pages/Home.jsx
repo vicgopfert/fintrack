@@ -7,7 +7,7 @@ const HomePage = () => {
   return (
     <>
       <h1 className="text-2xl font-bold text-sky-600">Finance Tracker</h1>
-      <p>Olá, {user.first_name}</p>
+      <p>Olá, {user.firstName}</p>
       <Button onClick={logout}>Sair</Button>
     </>
   );
