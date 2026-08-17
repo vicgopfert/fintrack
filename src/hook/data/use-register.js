@@ -1,21 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { publicApi } from '@/lib/axios';
+import { UserService } from '@/services/user';
 
 export const useRegister = () => {
   return useMutation({
     mutationKey: ['register'],
 
-    mutationFn: async (data) => {
-      const { data: createdUser } = await publicApi.post('/users', {
-        first_name: data.firstName,
-        last_name: data.lastName,
-        email: data.email,
-        password: data.password,
-      });
-      return createdUser;
-    },
+    mutationFn: UserService.register,
 
     onSuccess: (createdUser) => {
       console.log('Usuário registrado com sucesso:', createdUser);
