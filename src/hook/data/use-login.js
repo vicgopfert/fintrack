@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { api } from '@/lib/axios';
+import { publicApi } from '@/lib/axios';
 
 export const useLogin = () => {
   return useMutation({
     mutationKey: ['login'],
 
     mutationFn: async (data) => {
-      const { data: loggedUser } = await api.post('/auth/login', {
+      const { data: loggedUser } = await publicApi.post('/auth/login', {
         email: data.email,
         password: data.password,
       });

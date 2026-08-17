@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useLogin } from '@/hook/data/use-login';
 import { useRegister } from '@/hook/data/use-register';
 import { clearTokens, getTokens, setTokens } from '@/lib/auth-tokens';
-import { api } from '@/lib/axios';
+import { protectedApi } from '@/lib/axios';
 
 export const AuthContext = createContext({
   user: null,
@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
         setIsInitializing(true);
         const { accessToken, refreshToken } = getTokens();
         if (!accessToken && !refreshToken) return;
-        const response = await api.get('/users/me');
+        const response = await protectedApi.get('/users/me');
         setUser(response.data);
       } catch (error) {
         setUser(null);

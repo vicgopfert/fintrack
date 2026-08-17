@@ -1,14 +1,14 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { api } from '@/lib/axios';
+import { publicApi } from '@/lib/axios';
 
 export const useRegister = () => {
   return useMutation({
     mutationKey: ['register'],
 
     mutationFn: async (data) => {
-      const { data: createdUser } = await api.post('/users', {
+      const { data: createdUser } = await publicApi.post('/users', {
         first_name: data.firstName,
         last_name: data.lastName,
         email: data.email,
