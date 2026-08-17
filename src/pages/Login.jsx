@@ -24,7 +24,7 @@ const loginSchema = z.object({
 });
 
 const LoginPage = () => {
-  const { login: loginUser, isPending } = useAuthContext();
+  const { login, isPending } = useAuthContext();
 
   const {
     register,
@@ -41,7 +41,7 @@ const LoginPage = () => {
 
   const onSubmit = (data) => {
     const { email, password } = data;
-    loginUser({ email, password });
+    login({ email, password });
   };
 
   return (

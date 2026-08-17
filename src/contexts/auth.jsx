@@ -7,8 +7,9 @@ import { api } from '@/lib/axios';
 
 export const AuthContext = createContext({
   user: null,
-  login: () => {},
   register: () => {},
+  login: () => {},
+  logout: () => {},
   isPending: false,
   isInitializing: false,
 });
@@ -64,19 +65,25 @@ export const AuthContextProvider = ({ children }) => {
 
     try {
       const loggedUser = await loginUser({ email, password });
-      setUser(loggedUser);
+      setUser(loggedUser.user);
       setTokens(loggedUser.tokens);
     } catch {
       // O erro já é reportado ao usuário pelo onError do useLogin.
     }
   };
 
+  const logout = () => {
+    setUser(null);
+    clearTokens();
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
-        login: login,
         register,
+        login,
+        logout,
         isPending: isRegisterPending || isLoginPending,
         isInitializing,
       }}
