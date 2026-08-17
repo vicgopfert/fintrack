@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { useLogin } from '@/hook/data/use-login';
 import { useRegister } from '@/hook/data/use-register';
 import { clearTokens, getTokens, setTokens } from '@/lib/auth-tokens';
-import { protectedApi } from '@/lib/axios';
+import { UserService } from '@/services/user';
 
 export const AuthContext = createContext({
   user: null,
@@ -29,8 +29,8 @@ export const AuthContextProvider = ({ children }) => {
         setIsInitializing(true);
         const { accessToken, refreshToken } = getTokens();
         if (!accessToken && !refreshToken) return;
-        const response = await protectedApi.get('/users/me');
-        setUser(response.data);
+        const response = await UserService.me();
+        setUser(response);
       } catch (error) {
         setUser(null);
         console.error('Erro ao restaurar a sessão:', error);
