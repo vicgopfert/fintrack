@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import { useLogin } from '@/hook/data/use-login';
-import { useRegister } from '@/hook/data/use-register';
+import { useLogin } from '@/hooks/data/use-login';
+import { useRegister } from '@/hooks/data/use-register';
 import { clearTokens, getTokens, setTokens } from '@/lib/auth-tokens';
 import { UserService } from '@/services/user';
 
