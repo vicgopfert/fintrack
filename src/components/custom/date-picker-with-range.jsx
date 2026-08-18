@@ -1,11 +1,9 @@
-'use client';
-
 import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale/pt-BR';
 import { CalendarIcon } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Field, FieldLabel } from '@/components/ui/field';
 import {
   Popover,
   PopoverContent,
@@ -18,45 +16,39 @@ export const DatePickerWithRange = ({
   placeholder = 'Selecione uma data',
 }) => {
   return (
-    <Field className="mx-auto w-60">
-      <FieldLabel htmlFor="date-picker-range">Date Picker Range</FieldLabel>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          id="date-picker-range"
+          className="cursor-pointer justify-start px-2.5 font-normal"
+        >
+          <CalendarIcon data-icon="inline-start" />
 
-      <Popover>
-        <PopoverTrigger
-          render={
-            <Button
-              variant="outline"
-              id="date-picker-range"
-              className="justify-start px-2.5 font-normal"
-            >
-              <CalendarIcon data-icon="inline-start" />
+          {value?.from ? (
+            value.to ? (
+              <>
+                {format(value.from, 'dd MMM', { locale: ptBR })} -{' '}
+                {format(value.to, 'dd MMM', { locale: ptBR })}
+              </>
+            ) : (
+              format(value.from, 'dd MMM', { locale: ptBR })
+            )
+          ) : (
+            <span>{placeholder}</span>
+          )}
+        </Button>
+      </PopoverTrigger>
 
-              {value?.from ? (
-                value.to ? (
-                  <>
-                    {format(value.from, 'LLL dd, y')} -{' '}
-                    {format(value.to, 'LLL dd, y')}
-                  </>
-                ) : (
-                  format(value.from, 'LLL dd, y')
-                )
-              ) : (
-                <span>{placeholder}</span>
-              )}
-            </Button>
-          }
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="range"
+          defaultMonth={value?.from}
+          selected={value}
+          onSelect={onChange}
+          numberOfMonths={2}
         />
-
-        <PopoverContent className="w-auto p-0" align="start">
-          <Calendar
-            mode="range"
-            defaultMonth={value?.from}
-            selected={value}
-            onSelect={onChange}
-            numberOfMonths={2}
-          />
-        </PopoverContent>
-      </Popover>
-    </Field>
+      </PopoverContent>
+    </Popover>
   );
 };
