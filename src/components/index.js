@@ -1,3 +1,4 @@
+export { default as Header } from './custom/header';
 export { default as PasswordInput } from './custom/password-input';
 export { Button } from './ui/button';
 export {
