@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
 import { z } from 'zod';
 
+import logo from '@/assets/images/logo.svg';
 import {
   Button,
   Card,
@@ -46,6 +47,14 @@ const LoginPage = () => {
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 px-4 py-10">
+      <img
+        src={logo}
+        alt="FinTrack"
+        width={127}
+        height={30}
+        className="mb-2 h-12 w-auto drop-shadow-[0_0_24px_var(--primary-green)]/30 select-none"
+      />
+
       <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm">
         <Card className="w-full gap-7 border-0 bg-transparent py-0 shadow-none ring-0">
           <CardHeader className="items-center gap-2 px-0 text-center">
