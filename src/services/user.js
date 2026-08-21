@@ -24,6 +24,19 @@ import { protectedApi, publicApi } from '@/lib/axios';
  */
 
 /**
+ * Resumo financeiro de um período. Os totais vêm como string para preservar a
+ * precisão decimal que o backend usa nos valores monetários.
+ * @typedef {Object} Balance
+ * @property {string} earnings - Total de ganhos.
+ * @property {string} expenses - Total de despesas.
+ * @property {string} investments - Total investido.
+ * @property {number} earningsPercentage - Percentual de ganhos.
+ * @property {number} expensesPercentage - Percentual de despesas.
+ * @property {number} investmentsPercentage - Percentual de investimentos.
+ * @property {string} balance - Saldo do período.
+ */
+
+/**
  * @typedef {Object} AuthResult
  * @property {User} user - Usuário autenticado.
  * @property {Tokens} tokens - Tokens da sessão.
@@ -98,5 +111,26 @@ export const UserService = {
     const response = await protectedApi.get('/users/me');
 
     return mapUser(response.data);
+  },
+
+  /**
+   * Busca o resumo financeiro da sessão atual dentro de um período.
+   * @param {Object} input - Período consultado.
+   * @param {string} input.from - Data inicial, no formato `yyyy-MM-dd`.
+   * @param {string} input.to - Data final, no formato `yyyy-MM-dd`.
+   * @returns {Promise<Balance>} Totais e percentuais do período.
+   * @throws {import('axios').AxiosError} Se não houver sessão válida ou se as
+   * datas estiverem ausentes ou malformadas.
+   */
+  getBalance: async (input) => {
+    const queryParams = new URLSearchParams();
+    queryParams.set('from', input.from);
+    queryParams.set('to', input.to);
+
+    const response = await protectedApi.get(
+      `/users/me/balance?${queryParams.toString()}`
+    );
+
+    return response.data;
   },
 };
