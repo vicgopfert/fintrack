@@ -1,6 +1,5 @@
-import { PlusIcon } from 'lucide-react';
-
-import { Button, Header } from '@/components';
+import { Header } from '@/components';
+import AddTransactionButton from '@/components/custom/add-transaction-button';
 import Balance from '@/components/custom/balance';
 import DateSelection from '@/components/custom/date-selection';
 
@@ -15,10 +14,7 @@ const HomePage = () => {
 
           <div className="flex items-center gap-2">
             <DateSelection />
-            <Button className="cursor-pointer">
-              <PlusIcon />
-              Nova transação
-            </Button>
+            <AddTransactionButton />
           </div>
         </div>
 
