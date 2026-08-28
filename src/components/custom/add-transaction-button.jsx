@@ -22,18 +22,17 @@ import {
 } from '@/components/ui/dialog';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { Spinner } from '@/components/ui/spinner';
+import { useCreateTransaction } from '@/hooks/data/use-transactions';
 
 import { DatePicker } from './date-picker';
 
 const addTransactionSchema = z.object({
   name: z.string().trim().min(1, 'O nome é obrigatório.'),
-
   amount: z
     .number('O valor deve ser um número.')
     .positive('O valor deve ser maior que zero.'),
-
   date: z.date('A data é obrigatória.'),
-
   type: z.enum(
     ['EARNING', 'EXPENSE', 'INVESTMENT'],
     'Selecione um tipo válido.'
@@ -42,7 +41,7 @@ const addTransactionSchema = z.object({
 
 const AddTransactionButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const { mutateAsync: createTransaction, isPending } = useCreateTransaction();
   const {
     handleSubmit,
     control,
@@ -61,17 +60,18 @@ const AddTransactionButton = () => {
 
   const handleOpenChange = (open) => {
     setIsOpen(open);
-
-    if (!open) {
+    if (open) {
       reset();
     }
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
-
-    reset();
-    setIsOpen(false);
+  const onSubmit = async (data) => {
+    try {
+      await createTransaction(data);
+      setIsOpen(false);
+    } catch {
+      // Erro reportado pelo onError do useCreateTransaction.
+    }
   };
 
   return (
@@ -131,7 +131,8 @@ const AddTransactionButton = () => {
                   decimalScale={2}
                   allowNegative={false}
                   customInput={Input}
-                  onValueChange={(values) => {
+                  onValueChange={(values, sourceInfo) => {
+                    if (sourceInfo.source !== 'event') return;
                     field.onChange(values.floatValue);
                   }}
                 />
@@ -211,13 +212,14 @@ const AddTransactionButton = () => {
                 type="button"
                 size="lg"
                 variant="secondary"
-                onClick={() => reset()}
+                disabled={isPending}
               >
                 Cancelar
               </Button>
             </DialogClose>
 
-            <Button type="submit" size="lg">
+            <Button type="submit" size="lg" disabled={isPending}>
+              {isPending && <Spinner />}
               Adicionar
             </Button>
           </div>
