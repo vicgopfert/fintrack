@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
@@ -14,19 +14,30 @@ const parseDateFromQueryParam = (value) => {
   return Number.isNaN(parsed.getTime()) ? null : parsed;
 };
 
+const parseDateRangeFromSearchParams = (searchParams) => {
+  const today = new Date();
+
+  const from =
+    parseDateFromQueryParam(searchParams.get('from')) ?? startOfMonth(today);
+  const to =
+    parseDateFromQueryParam(searchParams.get('to')) ?? endOfMonth(today);
+
+  return from <= to ? { from, to } : { from: to, to: from };
+};
+
 const DateSelection = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const [date, setDate] = useState(() => ({
-    from: parseDateFromQueryParam(searchParams.get('from')) ?? new Date(),
-    to: parseDateFromQueryParam(searchParams.get('to')) ?? new Date(),
-  }));
+  const [date, setDate] = useState(() =>
+    parseDateRangeFromSearchParams(searchParams)
+  );
 
   useEffect(() => {
     if (!date?.from || !date?.to) return;
 
     const queryParams = new URLSearchParams();
+
     queryParams.set('from', formatDateToQueryParam(date.from));
     queryParams.set('to', formatDateToQueryParam(date.to));
 
