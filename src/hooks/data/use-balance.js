@@ -16,6 +16,8 @@ export const useBalance = () => {
 
     queryFn: () => UserService.getBalance({ from, to }),
 
+    staleTime: 1000 * 60 * 5,
+
     enabled: !!user?.id && !!from && !!to,
 
     meta: { errorMessage: 'Erro ao buscar o resumo financeiro.' },
