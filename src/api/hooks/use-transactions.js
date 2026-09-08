@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { mutationKeys, queryKeys } from '@/api/hooks/query-keys';
+import { mutationKeys, queryKeys } from '@/api/queries/query-keys';
 import { TransactionService } from '@/api/services/transaction';
 
 export const useCreateTransaction = () => {

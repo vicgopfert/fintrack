@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 
-import { queryKeys } from '@/api/hooks/query-keys';
+import { queryKeys } from '@/api/queries/query-keys';
 import { UserService } from '@/api/services/user';
 import { useAuthContext } from '@/contexts/auth';
 
