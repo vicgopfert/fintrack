@@ -1,4 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import {
   PiggyBankIcon,
   PlusIcon,
@@ -6,11 +5,9 @@ import {
   TrendingUpIcon,
 } from 'lucide-react';
 import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-import z from 'zod';
 
-import { useCreateTransaction } from '@/api/hooks/use-transactions';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -24,53 +21,20 @@ import {
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
+import { useCreateTransactionForm } from '@/forms/hooks/transaction';
 
 import { DatePicker } from './date-picker';
 
-const addTransactionSchema = z.object({
-  name: z.string().trim().min(1, 'O nome é obrigatório.'),
-  amount: z
-    .number('O valor deve ser um número.')
-    .positive('O valor deve ser maior que zero.'),
-  date: z.date('A data é obrigatória.'),
-  type: z.enum(
-    ['EARNING', 'EXPENSE', 'INVESTMENT'],
-    'Selecione um tipo válido.'
-  ),
-});
-
 const AddTransactionButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { mutateAsync: createTransaction, isPending } = useCreateTransaction();
-  const {
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(addTransactionSchema),
 
-    defaultValues: {
-      name: '',
-      amount: undefined,
-      date: new Date(),
-      type: undefined,
-    },
-  });
+  const { handleSubmit, control, reset, errors, isPending, onSubmit } =
+    useCreateTransactionForm({ onSuccess: () => setIsOpen(false) });
 
   const handleOpenChange = (open) => {
     setIsOpen(open);
     if (open) {
       reset();
-    }
-  };
-
-  const onSubmit = async (data) => {
-    try {
-      await createTransaction(data);
-      setIsOpen(false);
-    } catch {
-      // Erro reportado pelo onError do useCreateTransaction.
     }
   };
 
