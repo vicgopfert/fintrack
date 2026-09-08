@@ -10,6 +10,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import z from 'zod';
 
+import { useCreateTransaction } from '@/api/hooks/use-transactions';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -23,7 +24,6 @@ import {
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinner';
-import { useCreateTransaction } from '@/hooks/data/use-transactions';
 
 import { DatePicker } from './date-picker';
 

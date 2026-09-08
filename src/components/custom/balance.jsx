@@ -5,7 +5,7 @@ import {
   WalletIcon,
 } from 'lucide-react';
 
-import { useBalance } from '@/hooks/data/use-balance';
+import { useBalance } from '@/api/hooks/use-balance';
 
 import BalanceItem from './balance-item';
 
