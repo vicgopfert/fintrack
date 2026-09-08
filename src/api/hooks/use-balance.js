@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 
+import { queryKeys } from '@/api/hooks/query-keys';
 import { UserService } from '@/api/services/user';
 import { useAuthContext } from '@/contexts/auth';
 
@@ -12,7 +13,7 @@ export const useBalance = () => {
   const to = searchParams.get('to');
 
   return useQuery({
-    queryKey: ['balance', user?.id, from, to],
+    queryKey: queryKeys.balance.period(user?.id, from, to),
 
     queryFn: () => UserService.getBalance({ from, to }),
 

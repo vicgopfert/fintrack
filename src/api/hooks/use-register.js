@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
+import { mutationKeys } from '@/api/hooks/query-keys';
 import { UserService } from '@/api/services/user';
 
 export const useRegister = () => {
   return useMutation({
-    mutationKey: ['register'],
+    mutationKey: mutationKeys.register,
 
     mutationFn: UserService.register,
 
