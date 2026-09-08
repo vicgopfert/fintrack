@@ -1,7 +1,4 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
-import { z } from 'zod';
 
 import logo from '@/assets/images/logo.svg';
 import {
@@ -17,33 +14,11 @@ import {
   Input,
   PasswordInput,
 } from '@/components';
-import { useAuthContext } from '@/contexts/auth';
-
-const loginSchema = z.object({
-  email: z.email('E-mail inválido'),
-  password: z.string().trim().min(6, 'A senha deve ter no mínimo 6 caracteres'),
-});
+import { useLoginForm } from '@/forms/hooks/use-login-form';
 
 const LoginPage = () => {
-  const { login, isPending } = useAuthContext();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(loginSchema),
-    mode: 'onSubmit',
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
-
-  const onSubmit = (data) => {
-    const { email, password } = data;
-    login({ email, password });
-  };
+  const { register, handleSubmit, errors, isPending, onSubmit } =
+    useLoginForm();
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4 px-4 py-10">
