@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import { useLogin } from '@/api/hooks/use-login';
 import { useRegister } from '@/api/hooks/use-register';
+import { UserService } from '@/api/services/user';
 import { clearTokens, getTokens, setTokens } from '@/lib/auth-tokens';
-import { UserService } from '@/services/user';
 
 export const AuthContext = createContext({
   user: null,

@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { UserService } from '@/services/user';
+import { UserService } from '@/api/services/user';
 
 export const useRegister = () => {
   return useMutation({

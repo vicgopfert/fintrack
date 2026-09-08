@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-import { TransactionService } from '@/services/transaction';
+import { TransactionService } from '@/api/services/transaction';
 
 export const useCreateTransaction = () => {
   const queryClient = useQueryClient();

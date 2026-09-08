@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'react-router';
 
+import { UserService } from '@/api/services/user';
 import { useAuthContext } from '@/contexts/auth';
-import { UserService } from '@/services/user';
 
 export const useBalance = () => {
   const [searchParams] = useSearchParams();
