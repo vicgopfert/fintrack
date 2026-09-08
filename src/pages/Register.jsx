@@ -15,6 +15,7 @@ import {
   FieldError,
   Input,
   PasswordInput,
+  Spinner,
 } from '@/components';
 import { useRegisterForm } from '@/forms/hooks/use-register-form';
 
@@ -142,6 +143,7 @@ const RegisterPage = () => {
               className="h-11 w-full cursor-pointer text-sm font-semibold"
               disabled={isPending}
             >
+              {isPending && <Spinner />}
               Criar conta
             </Button>
           </CardFooter>

@@ -13,6 +13,7 @@ import {
   FieldError,
   Input,
   PasswordInput,
+  Spinner,
 } from '@/components';
 import { useLoginForm } from '@/forms/hooks/use-login-form';
 
@@ -64,6 +65,7 @@ const LoginPage = () => {
               className="h-11 w-full cursor-pointer text-sm font-semibold"
               disabled={isPending}
             >
+              {isPending && <Spinner />}
               Fazer login
             </Button>
           </CardFooter>
