@@ -14,6 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 
 export function DataTable({ columns, data }) {
   const [sorting, setSorting] = useState([]);
@@ -30,13 +31,19 @@ export function DataTable({ columns, data }) {
   });
 
   return (
-    <Table>
-      <TableHeader>
+    <Table containerClassName="overflow-visible">
+      <TableHeader className="sticky top-0 z-10 bg-card shadow-[inset_0_-1px_0_var(--border)] [&_tr]:border-0">
         {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
+          <TableRow key={headerGroup.id} className="hover:bg-transparent">
             {headerGroup.headers.map((header) => {
               return (
-                <TableHead key={header.id}>
+                <TableHead
+                  key={header.id}
+                  className={cn(
+                    'h-11 bg-muted/50 px-4 text-sm font-medium text-muted-foreground',
+                    header.column.columnDef.meta?.className
+                  )}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -55,18 +62,28 @@ export function DataTable({ columns, data }) {
             <TableRow
               key={row.id}
               data-state={row.getIsSelected() && 'selected'}
+              className="last:border-0"
             >
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+                <TableCell
+                  key={cell.id}
+                  className={cn(
+                    'px-4 py-3',
+                    cell.column.columnDef.meta?.className
+                  )}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
             </TableRow>
           ))
         ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              No results.
+          <TableRow className="hover:bg-transparent">
+            <TableCell
+              colSpan={columns.length}
+              className="h-28 text-center text-sm text-muted-foreground"
+            >
+              Nenhuma transação no período selecionado.
             </TableCell>
           </TableRow>
         )}

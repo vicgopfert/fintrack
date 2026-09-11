@@ -7,12 +7,15 @@ import { formatCurrency } from '@/helpers/currency';
 
 import { Button } from '..';
 import { DataTable } from '../ui/data-table';
+import { ScrollArea } from '../ui/scroll-area';
 import TransactionTypeBadge from './transaction-type-badge';
 
 export const columns = [
   {
     accessorKey: 'name',
     header: 'Título',
+    meta: { className: 'font-medium text-foreground' },
+    cell: ({ row: { original: transaction } }) => transaction.name,
   },
   {
     accessorKey: 'type',
@@ -24,6 +27,7 @@ export const columns = [
   {
     accessorKey: 'date',
     header: 'Data',
+    meta: { className: 'text-muted-foreground' },
     cell: ({ row: { original: transaction } }) => {
       return format(new Date(transaction.date), "dd 'de' MMMM 'de' yyyy", {
         locale: ptBR,
@@ -33,6 +37,7 @@ export const columns = [
   {
     accessorKey: 'amount',
     header: 'Valor',
+    meta: { className: 'text-right font-medium tabular-nums' },
     cell: ({ row: { original: transaction } }) => {
       return formatCurrency(transaction.amount);
     },
@@ -40,9 +45,10 @@ export const columns = [
   {
     accessorKey: 'actions',
     header: 'Ações',
+    meta: { className: 'w-0 text-right' },
     cell: () => {
       return (
-        <Button variant="ghost" size="icon">
+        <Button variant="ghost" size="icon" className="cursor-pointer">
           <ExternalLinkIcon className="text-muted-foreground" />
         </Button>
       );
@@ -52,7 +58,18 @@ export const columns = [
 
 const TransactionsTable = () => {
   const { data: transactions } = useGetTransactions();
-  return <DataTable columns={columns} data={transactions ?? []} />;
+
+  return (
+    <div className="overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10">
+      <div className="px-4 py-4">
+        <h2 className="text-base font-bold">Transações</h2>
+      </div>
+
+      <ScrollArea viewportClassName="max-h-125">
+        <DataTable columns={columns} data={transactions ?? []} />
+      </ScrollArea>
+    </div>
+  );
 };
 
 export default TransactionsTable;
