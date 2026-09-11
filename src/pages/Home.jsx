@@ -2,6 +2,7 @@ import { Header } from '@/components';
 import AddTransactionButton from '@/components/custom/add-transaction-button';
 import Balance from '@/components/custom/balance';
 import DateSelection from '@/components/custom/date-selection';
+import TransactionsTable from '@/components/custom/transactions-table';
 
 const HomePage = () => {
   return (
@@ -20,6 +21,10 @@ const HomePage = () => {
 
         <div className="grid grid-cols-[2fr_1fr]">
           <Balance />
+        </div>
+
+        <div>
+          <TransactionsTable />
         </div>
       </div>
     </>

@@ -16,6 +16,7 @@ export const useCreateTransaction = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.balance.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions.all });
       toast.success('Transação adicionada com sucesso!');
     },
 
