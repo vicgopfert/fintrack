@@ -1,9 +1,11 @@
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { ExternalLinkIcon } from 'lucide-react';
 
 import { useGetTransactions } from '@/api/hooks/use-transactions';
 import { formatCurrency } from '@/helpers/currency';
 
+import { Button } from '..';
 import { DataTable } from '../ui/data-table';
 import TransactionTypeBadge from './transaction-type-badge';
 
@@ -38,6 +40,13 @@ export const columns = [
   {
     accessorKey: 'actions',
     header: 'Ações',
+    cell: () => {
+      return (
+        <Button variant="ghost" size="icon">
+          <ExternalLinkIcon className="text-muted-foreground" />
+        </Button>
+      );
+    },
   },
 ];
 
