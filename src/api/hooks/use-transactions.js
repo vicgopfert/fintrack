@@ -45,11 +45,11 @@ export const useEditTransaction = () => {
     },
 
     onError: (error) => {
-      console.error('Erro ao criar transação:', {
+      console.error('Erro ao editar transação:', {
         status: error.response?.status,
         data: error.response?.data,
       });
-      toast.error('Erro ao adicionar transação. Por favor, tente novamente.');
+      toast.error('Erro ao editar transação. Por favor, tente novamente.');
     },
   });
 };
