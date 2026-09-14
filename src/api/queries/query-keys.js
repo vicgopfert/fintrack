@@ -35,4 +35,5 @@ export const mutationKeys = {
   login: ['login'],
   register: ['register'],
   createTransaction: ['create-transaction'],
+  editTransaction: ['edit-transaction'],
 };

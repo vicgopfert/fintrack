@@ -4,7 +4,22 @@ import { protectedApi } from '@/lib/axios';
 
 export const TransactionService = {
   create: async (input) => {
-    const response = await protectedApi.post('/transactions/me', input);
+    const response = await protectedApi.post('/transactions/me', {
+      name: input.name,
+      amount: input.amount,
+      date: input.date,
+      type: input.type,
+    });
+    return response.data;
+  },
+
+  update: async (input) => {
+    const response = await protectedApi.put(`/transactions/me/${input.id}`, {
+      name: input.name,
+      amount: input.amount,
+      date: input.date,
+      type: input.type,
+    });
     return response.data;
   },
 

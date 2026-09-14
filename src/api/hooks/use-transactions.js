@@ -30,6 +30,30 @@ export const useCreateTransaction = () => {
   });
 };
 
+export const useEditTransaction = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: mutationKeys.editTransaction,
+
+    mutationFn: TransactionService.update,
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.balance.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.transactions.all });
+      toast.success('Transação atualizada com sucesso!');
+    },
+
+    onError: (error) => {
+      console.error('Erro ao criar transação:', {
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+      toast.error('Erro ao adicionar transação. Por favor, tente novamente.');
+    },
+  });
+};
+
 export const useGetTransactions = () => {
   const [searchParams] = useSearchParams();
   const { user } = useAuthContext();
