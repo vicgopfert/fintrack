@@ -11,3 +11,7 @@ export const createTransactionFormSchema = z.object({
     'Selecione um tipo válido.'
   ),
 });
+
+export const editTransactionFormSchema = createTransactionFormSchema.extend({
+  id: z.uuid('ID inválido.'),
+});
