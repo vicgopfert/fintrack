@@ -1,13 +1,12 @@
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { ExternalLinkIcon } from 'lucide-react';
 
 import { useGetTransactions } from '@/api/hooks/use-transactions';
 import { formatCurrency } from '@/helpers/currency';
 
-import { Button } from '..';
 import { DataTable } from '../ui/data-table';
 import { ScrollArea } from '../ui/scroll-area';
+import EditTransactionButton from './edit-transaction-button';
 import TransactionTypeBadge from './transaction-type-badge';
 
 export const columns = [
@@ -46,12 +45,8 @@ export const columns = [
     accessorKey: 'actions',
     header: 'Ações',
     meta: { className: 'w-0 text-right' },
-    cell: () => {
-      return (
-        <Button variant="ghost" size="icon" className="cursor-pointer">
-          <ExternalLinkIcon className="text-muted-foreground" />
-        </Button>
-      );
+    cell: ({ row: { original: transaction } }) => {
+      return <EditTransactionButton transaction={transaction} />;
     },
   },
 ];
